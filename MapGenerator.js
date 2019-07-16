@@ -148,24 +148,13 @@ class GenerateMap{
         });
     }
 
-    FindMyLocation(){
+    FindMyLocation(zoom){
         var a = this;
         var positionFeature = new ol.Feature();
         var accuracyFeature = new ol.Feature();
         var coordinates;
-        var firstTime = true
-
         accuracyFeature.setStyle(new ol.style.Style({
-            // image: new ol.style.Circle({
-            //     radius: 16,
-            //     fill: new ol.style.Fill({
-            //         color: '#eee'
-            //     }),
-            //     stroke: new ol.style.Stroke({
-            //         color: '#000',
-            //         width: 2,
-            //     })
-            // })
+
         }));
         positionFeature.setStyle(new ol.style.Style({
             image: new ol.style.Circle({
@@ -200,18 +189,15 @@ class GenerateMap{
             coordinates = geolocation.getPosition();
             positionFeature.setGeometry(coordinates ?
                 new ol.geom.Point(coordinates) : null);
-            if(firstTime === false){
+            if(zoom === a.map.getView().getZoom()){
                 a.map.setView(new ol.View({
                     center: geolocation.getPosition(),
-                    zoom: 17
+                    zoom: zoom
                 }));
             }
         });
         setTimeout(() => {
-            a.flyTo(coordinates, 16, function() {})
-            setTimeout(() => {
-                firstTime = false
-            }, 3000);
+            a.flyTo(coordinates, zoom, function() {})
         }, 2000);
         geolocation.setTracking('checked');
         a.map.addLayer(MyLocation)
@@ -231,7 +217,7 @@ class GenerateMap{
                 offsetY: 25,
                 textAlign: 'center',
                 textBaseline: "middle",
-                font: '800 14px sans-serif',
+                font: `400 14px ${this.Settings.fontFamily}`,
                 stroke: new ol.style.Stroke({ color:"#000", width:3 }),
                 fill: new ol.style.Fill({color:"#fff"})
             })

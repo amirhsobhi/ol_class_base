@@ -5,25 +5,36 @@
         </title>
         <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
         <script src="./MapGenerator.js"></script>
+        <style>
+            @font-face {
+                font-family: 'IRANSansWeb';
+                src: url('fonts/IRANSansWeb.eot') format('eot'),
+                url('fonts/IRANSansWeb.woff') format('woff'),
+                url('fonts/IRANSansWeb.ttf') format('truetype'); }
+                html, body{
+                    margin: 0;
+                    padding: 0
+                }
+        </style>
     </head>
     <body>
         <div id="map"></div>
     </body>
-    <script>
 
+    <script>
         var MyMap = new GenerateMap;
 
         MyMap.setDefaultSetting({
             bingKey: 'Al0BWX3zam4itRFhzR3xPNaJYNHcg44qIpazQLDNQ0XBWu66RoIbSHng_CGphEKz',
             DefaultZoom: 5.5,
-            Main: [52.8, 32]
+            Main: [52.8, 32],
+            fontFamily: 'IRANSansWeb'
         })
         
         MyMap.initMap()
-        MyMap.generateMapLayer('Tile', 'osm', true)
-        // MyMap.generateMapLayer('Tile', 'GRoad', true)
-        MyMap.FindMyLocation();
-        MyMap.onMapImg('int','pin',[(51.3892260),(35.7125950)])
-        
+        MyMap.generateMapLayer('Tile', 'osm', false)
+        MyMap.generateMapLayer('Tile', 'GRoad', true)
+        MyMap.FindMyLocation(14);
+        MyMap.onMapImg('int', 'pin', [(51.3892260),(35.7125950)])
     </script>
 </html>
