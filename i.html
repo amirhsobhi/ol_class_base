@@ -4,123 +4,26 @@
 
         </title>
         <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+        <script src="./MapGenerator.js"></script>
     </head>
     <body>
         <div id="map"></div>
     </body>
     <script>
 
-        class GenerateMap{
-            constructor(props){
-                this.map;
-                this.Settings;
-            }
-            setDefaultSetting(settings){
-                this.Settings = settings
-            }
-            initMap(){
-                var interactions = ol.interaction.defaults({altShiftDragRotate:false, pinchRotate:false});
-                this.map = new ol.Map({
-                    interactions: interactions,
-                    controls : ol.control.defaults({
-                    attribution : false,
-                    zoom : true,
-                        }),
-                        target: 'map',
-                        view: new ol.View({
-                        center: ol.proj.fromLonLat(this.Settings.Main),
-                        zoom: this.Settings.DefaultZoom
-                        })
-                    });
-            }
-            generateMapLayer(type, name, isvisible){
-                switch (type) {
-                    case 'Tile':
-                        var osm = new ol.layer.Tile({
-                            visible: isvisible,
-                            source: new ol.source.OSM()
-                        });
-                        var sac = new ol.layer.Tile({
-                            visible: isvisible,
-                            source: new ol.source.XYZ({
-                                url: "http://shabakehafzar.net:3832/{z}/{x}/{y}.png"
-                            })
-                        });
-                        var GRoad = new ol.layer.Tile({
-                            visible: isvisible,
-                            source: new ol.source.XYZ({
-                                url: "http://mt.google.com/vt/lyrs=m&hl=fa&gl=fa&x={x}&y={y}&z={z}&s=png"
-                            })
-                        });
-                        var GSat = new ol.layer.Tile({
-                            visible: isvisible,
-                            source: new ol.source.XYZ({
-                                url: "http://mt.google.com/vt/lyrs=s&hl=fa&gl=fa&x={x}&y={y}&z={z}&s=png"
-                            })
-                        });
-                        break;
-                    case 'Bing':
-                        var BRoad = new ol.layer.Tile({
-                            visible: isvisible,
-                            preload: Infinity,
-                            source: new ol.source.BingMaps({
-                                key: this.Settings.bingKey,
-                                imagerySet: "Road"
-                            })
-                        });
-
-                        var BTag = new ol.layer.Tile({
-                            visible: isvisible,
-                            preload: Infinity,
-                            source: new ol.source.BingMaps({
-                                key: this.Settings.bingKey,
-                                imagerySet: "aerialWithLabels"
-                            })
-                        });
-
-                        var BSat = new ol.layer.Tile({
-                            visible: isvisible,
-                            source: new ol.source.BingMaps({
-                                key: this.Settings.bingKey,
-                                imagerySet: "aerial"
-                            })
-                        });
-                        break;
-                }
-                if(name){
-                    this.map.addLayer(eval(name))
-                }
-            }
-
-            gennerateTileLayer(){
-                var T = new ol.layer.Tile({
-                    visible: false,
-                    source: new ol.source.XYZ({
-                        url: ""
-                    })
-                });
-            }
-
-            generateImgLayer(){
-                var I = new ol.layer.Image({
-                    visible: false,
-                    source: new ol.source.ImageWMS({
-                        url: '',
-                        params: {'LayerId': ''},
-                    })
-                });
-            }
-        }
         var MyMap = new GenerateMap;
+
         MyMap.setDefaultSetting({
             bingKey: 'Al0BWX3zam4itRFhzR3xPNaJYNHcg44qIpazQLDNQ0XBWu66RoIbSHng_CGphEKz',
             DefaultZoom: 5.5,
             Main: [52.8, 32]
         })
+        
         MyMap.initMap()
         MyMap.generateMapLayer('Tile', 'osm', false)
         MyMap.generateMapLayer('Tile', 'GRoad', true)
-
+        MyMap.FindMyLocation();
+        MyMap.onMapImg('pin',[(51.3892260),(35.7125950)])
         
     </script>
 </html>
