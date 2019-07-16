@@ -92,13 +92,14 @@ class GenerateMap{
         }
     }
 
-    gennerateTileLayer(){
-        var T = new ol.layer.Tile({
+    gennerateTileLayer(url, layer_name){
+        layer_name = new ol.layer.Tile({
             visible: false,
             source: new ol.source.XYZ({
-                url: ""
+                url: url
             })
         });
+        this.map.addLayer(layer_name)
     }
 
     generateImgLayer(){
@@ -216,13 +217,13 @@ class GenerateMap{
         a.map.addLayer(MyLocation)
     }
 
-    onMapImg(name, pos){
+    onMapImg(iconType, iconName, pos){
         var style = new ol.style.Style({
             image: new ol.style.Icon({
                 opacity: 1,
                 scale: 1,
                 crossOrigin: 'anonymous',
-                src: `assets/img/${name}.png`
+                src: iconType == 'int'? `assets/img/${iconName}.png`: iconName
             }),
             text: new ol.style.Text({
                 text: 'تست',
