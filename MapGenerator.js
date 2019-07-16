@@ -22,6 +22,7 @@ class GenerateMap{
             interactions: interactions,
             controls : ol.control.defaults({
             attribution : false,
+            rotate: false,
             zoom : true,
                 }),
                 target: 'map',
@@ -203,16 +204,16 @@ class GenerateMap{
         a.map.addLayer(MyLocation)
     }
 
-    onMapImg(iconType, iconName, pos){
+    onMapImg(iconType, iconName, position, size, text){
         var style = new ol.style.Style({
             image: new ol.style.Icon({
                 opacity: 1,
-                scale: 1,
+                scale: size !== null? size: 0.8,
                 crossOrigin: 'anonymous',
                 src: iconType == 'int'? `assets/img/${iconName}.png`: iconName
             }),
             text: new ol.style.Text({
-                text: 'تست',
+                text: text !== null? text : null,
                 offsetX: 0,
                 offsetY: 25,
                 textAlign: 'center',
@@ -226,7 +227,7 @@ class GenerateMap{
             source: new ol.source.Vector({
                 features: [
                     new ol.Feature({
-                        geometry: new ol.geom.Point(ol.proj.fromLonLat(pos))
+                        geometry: new ol.geom.Point(ol.proj.fromLonLat(position))
                     })
                 ]
             })
